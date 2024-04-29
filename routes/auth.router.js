@@ -1,16 +1,17 @@
 
 import express from 'express';
-import {signIn, signUp, forgotMyPassword} from '../controllers/auth.controller.js';
+import {signInForm, signInProcess, signUpForm, signUpProcess, forgotMyPassword} from '../controllers/auth.controller.js';
 
 const router = express.Router();
 
-// define a route
+// define a route 
 
-router.get('/signin', signIn); // use the login method from the UserController class
-router.get('/signup', signUp); // use the postLogin method from the UserController class
+router.get('/signin', signInForm); // use the login method from the UserController class
+router.post('/signin', signInProcess); // use the login method from the UserController class
+
+router.get('/signup', signUpForm); // use the postLogin method from the UserController class
+router.post('/signup', signUpProcess); // use the postLogin method from the UserController class
+
 router.get('/forgot-my-password', forgotMyPassword); 
-
-
-
 
 export default router;

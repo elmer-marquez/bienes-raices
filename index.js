@@ -1,8 +1,24 @@
 import express from 'express'; //ECMA6 module syntax
+
+
 import authRouter from './routes/auth.router.js';
+import db from './config/database.js';
 
 const app = express();
 const PORT = 3000;
+
+// habilitar lectura de datos del formulario
+app.use( express.urlencoded({extended: true}) );
+
+// Test the connection to the database
+try {
+    await db.authenticate();
+    db.sync();
+
+    console.log('Connection has been established successfully.');
+} catch (error) {
+    console.error('Unable to connect to the database:', error);
+}
 
 //Routes
 app.use("/auth", authRouter); // use the userRoutes module
