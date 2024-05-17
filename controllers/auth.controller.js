@@ -1,4 +1,5 @@
 import {check, validationResult} from 'express-validator'
+import { sendEmailToConfirmaAccount } from '../helpers/emails.js'
 
 import User from '../models/User.js'
 import { generateId } from '../helpers/tokens.js';
@@ -54,7 +55,14 @@ const signUpProcess = async (req, res) =>{
         });
     }
 
-    const usr = await User.create({ name, email, password, token: generateId() })
+    const usr = await User.create({ name, email, password, token: generateId() });
+
+    //send mail confirmation
+    await sendEmailToConfirmaAccount({
+        name: usr.name,
+        email: usr.email,
+        token: usr.token
+    });
 
     // Mostrar mensaje de confirmacion
     res.render('templates/message', {
@@ -62,6 +70,20 @@ const signUpProcess = async (req, res) =>{
         message: 'Hemos enviado un email de confirmacion'
     })
 
+}
+
+const verifyAccountConfirmationToken = (req, res, next) => {
+
+    const { token } = req.params;
+
+    //verify token
+
+    //confirm account
+    
+
+    console.log(token + "   comprobando...");
+
+    next();
 }
 
 //Others
@@ -78,5 +100,6 @@ export {
     signInProcess,
     signUpForm,
     signUpProcess,
+    verifyAccountConfirmationToken,
     forgotMyPassword
 }
